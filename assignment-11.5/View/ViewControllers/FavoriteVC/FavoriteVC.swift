@@ -52,8 +52,9 @@ class FavoriteVC: UIViewController {
             
             tblFavorite.isHidden = false
             lblFavoriteEmpty.isHidden = true
-            tblFavorite.reloadData()
-            
+            DispatchQueue.main.async {[weak self] in
+                       self?.tblFavorite.reloadData()
+                   }
         }
         
     }
@@ -100,7 +101,9 @@ extension FavoriteVC: UITableViewDelegate,UITableViewDataSource{
         guard let arrayMovies = arrayMovies else { return }
         presenter.btnFavoriteTappedFor(movie: arrayMovies[sender.tag], markedFavorite: false)
         self.arrayMovies = presenter.getAllFavoriteMovies() as? [MovieListItem]
-        tblFavorite.reloadData()
+         DispatchQueue.main.async {[weak self] in
+            self?.tblFavorite.reloadData()
+        }
         self.favoriteMoviesCount()
         NotificationCenter.default.post(name: Notification.Name("FavoriteDeleted"), object: nil)
 
